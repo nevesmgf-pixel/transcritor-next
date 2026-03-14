@@ -22,11 +22,15 @@ async function readJsonResponse<T>(response: Response): Promise<T> {
 export function TranscritorApp() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [transcript, setTranscript] = useState("");
+  const [boostPlan, setBoostPlan] = useState("");
   const [socialKit, setSocialKit] = useState("");
+  const [visualKit, setVisualKit] = useState("");
   const [youtubeKit, setYoutubeKit] = useState("");
   const [error, setError] = useState("");
   const [isTranscribing, setIsTranscribing] = useState(false);
+  const [isGeneratingBoostPlan, setIsGeneratingBoostPlan] = useState(false);
   const [isGeneratingSocial, setIsGeneratingSocial] = useState(false);
+  const [isGeneratingVisual, setIsGeneratingVisual] = useState(false);
   const [isGeneratingYoutube, setIsGeneratingYoutube] = useState(false);
 
   const canGenerate = useMemo(() => transcript.trim().length > 0, [transcript]);
@@ -55,7 +59,9 @@ export function TranscritorApp() {
 
       const data = await readJsonResponse<{ transcript: string }>(response);
       setTranscript(data.transcript);
+      setBoostPlan("");
       setSocialKit("");
+      setVisualKit("");
       setYoutubeKit("");
     } catch (requestError) {
       setError(requestError instanceof Error ? requestError.message : "Falha ao transcrever.");
@@ -114,15 +120,23 @@ export function TranscritorApp() {
           />
           <ActionPanel
             canGenerate={canGenerate}
+            loadingBoostPlan={isGeneratingBoostPlan}
             loadingSocial={isGeneratingSocial}
+            loadingVisual={isGeneratingVisual}
             loadingYouTube={isGeneratingYoutube}
+            onGenerateBoostPlan={() => handleGenerate("/api/generate-boost-plan", setBoostPlan, setIsGeneratingBoostPlan)}
             onGenerateSocial={() => handleGenerate("/api/generate-social-kit", setSocialKit, setIsGeneratingSocial)}
+            onGenerateVisual={() => handleGenerate("/api/generate-visual-kit", setVisualKit, setIsGeneratingVisual)}
             onGenerateYouTube={() => handleGenerate("/api/generate-youtube-kit", setYoutubeKit, setIsGeneratingYoutube)}
           />
           <ContentKitViewer
+            boostPlan={boostPlan}
             socialKit={socialKit}
+            visualKit={visualKit}
             youtubeKit={youtubeKit}
+            onDownloadBoostPlan={() => handleDownload(boostPlan, "plano-impulsionamento.txt")}
             onDownloadSocialKit={() => handleDownload(socialKit, "kit-social.txt")}
+            onDownloadVisualKit={() => handleDownload(visualKit, "kit-visual.txt")}
             onDownloadYoutubeKit={() => handleDownload(youtubeKit, "kit-youtube.txt")}
           />
         </div>

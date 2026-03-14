@@ -1,14 +1,22 @@
 type ContentKitViewerProps = {
+  onDownloadBoostPlan: () => void;
   onDownloadSocialKit: () => void;
+  onDownloadVisualKit: () => void;
   onDownloadYoutubeKit: () => void;
+  boostPlan: string;
   socialKit: string;
+  visualKit: string;
   youtubeKit: string;
 };
 
 export function ContentKitViewer({
+  onDownloadBoostPlan,
   onDownloadSocialKit,
+  onDownloadVisualKit,
   onDownloadYoutubeKit,
+  boostPlan,
   socialKit,
+  visualKit,
   youtubeKit
 }: ContentKitViewerProps) {
   return (
@@ -27,6 +35,30 @@ export function ContentKitViewer({
             ) : null}
           </div>
           <pre className="kit-card__content">{socialKit || "Nenhum conteúdo gerado ainda."}</pre>
+        </article>
+
+        <article className="kit-card">
+          <div className="kit-card__header">
+            <h3 className="kit-card__title">Plano de Impulsionamento</h3>
+            {boostPlan ? (
+              <button className="button button--secondary" onClick={onDownloadBoostPlan} type="button">
+                Baixar Plano de Impulsionamento
+              </button>
+            ) : null}
+          </div>
+          <pre className="kit-card__content">{boostPlan || "Nenhum conteúdo gerado ainda."}</pre>
+        </article>
+
+        <article className="kit-card">
+          <div className="kit-card__header">
+            <h3 className="kit-card__title">Kit visual</h3>
+            {visualKit ? (
+              <button className="button button--secondary" onClick={onDownloadVisualKit} type="button">
+                Baixar Kit visual
+              </button>
+            ) : null}
+          </div>
+          <pre className="kit-card__content">{visualKit || "Nenhum conteúdo gerado ainda."}</pre>
         </article>
 
         <article className="kit-card">

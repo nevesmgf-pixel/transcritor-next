@@ -1,16 +1,24 @@
 type ActionPanelProps = {
   canGenerate: boolean;
   loadingSocial: boolean;
+  loadingBoostPlan: boolean;
+  loadingVisual: boolean;
   loadingYouTube: boolean;
   onGenerateSocial: () => void;
+  onGenerateBoostPlan: () => void;
+  onGenerateVisual: () => void;
   onGenerateYouTube: () => void;
 };
 
 export function ActionPanel({
   canGenerate,
   loadingSocial,
+  loadingBoostPlan,
+  loadingVisual,
   loadingYouTube,
   onGenerateSocial,
+  onGenerateBoostPlan,
+  onGenerateVisual,
   onGenerateYouTube
 }: ActionPanelProps) {
   return (
@@ -27,6 +35,23 @@ export function ActionPanel({
         >
           {loadingSocial ? "Gerando kit social..." : "Gerar kit social"}
         </button>
+        <button
+          className="button button--secondary"
+          disabled={!canGenerate || loadingBoostPlan}
+          onClick={onGenerateBoostPlan}
+          type="button"
+        >
+          {loadingBoostPlan ? "Gerando Plano de Impulsionamento..." : "Gerar Plano de Impulsionamento"}
+        </button>
+        <button
+          className="button button--secondary"
+          disabled={!canGenerate || loadingVisual}
+          onClick={onGenerateVisual}
+          type="button"
+        >
+          {loadingVisual ? "Gerando Kit visual..." : "Gerar Kit visual"}
+        </button>
+
         <button
           className="button button--secondary"
           disabled={!canGenerate || loadingYouTube}
