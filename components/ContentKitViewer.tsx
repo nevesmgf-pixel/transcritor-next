@@ -42,7 +42,7 @@ export function ContentKitViewer({
             <h3 className="kit-card__title">Plano de Impulsionamento</h3>
             {boostPlan ? (
               <button className="button button--secondary" onClick={onDownloadBoostPlan} type="button">
-                Baixar Plano de Impulsionamento
+                Baixar .txt
               </button>
             ) : null}
           </div>
@@ -54,7 +54,7 @@ export function ContentKitViewer({
             <h3 className="kit-card__title">Kit visual</h3>
             {visualKit ? (
               <button className="button button--secondary" onClick={onDownloadVisualKit} type="button">
-                Baixar Kit visual
+                Baixar .txt
               </button>
             ) : null}
           </div>

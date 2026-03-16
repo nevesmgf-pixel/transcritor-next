@@ -124,6 +124,10 @@ export function TranscritorApp() {
             loadingSocial={isGeneratingSocial}
             loadingVisual={isGeneratingVisual}
             loadingYouTube={isGeneratingYoutube}
+            boostPlanGenerated={boostPlan.trim().length > 0}
+            socialGenerated={socialKit.trim().length > 0}
+            visualGenerated={visualKit.trim().length > 0}
+            youtubeGenerated={youtubeKit.trim().length > 0}
             onGenerateBoostPlan={() => handleGenerate("/api/generate-boost-plan", setBoostPlan, setIsGeneratingBoostPlan)}
             onGenerateSocial={() => handleGenerate("/api/generate-social-kit", setSocialKit, setIsGeneratingSocial)}
             onGenerateVisual={() => handleGenerate("/api/generate-visual-kit", setVisualKit, setIsGeneratingVisual)}
