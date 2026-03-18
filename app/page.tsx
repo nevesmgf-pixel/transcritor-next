@@ -1,5 +1,5 @@
-import { TranscritorApp } from "@/components/TranscritorApp";
+import { ContentEngine } from "@/components/ContentEngine";
 
 export default function HomePage() {
-  return <TranscritorApp />;
+  return <ContentEngine />;
 }

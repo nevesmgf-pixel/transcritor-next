@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Transcritor NextLevel",
-  description: "Transcrição e geração de conteúdo com Gemini"
+  title: "NextLevel Content Engine",
+  description: "IA aplicada a conteúdo"
 };
 
 export default function RootLayout({

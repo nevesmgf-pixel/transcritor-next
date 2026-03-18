@@ -8,11 +8,15 @@ export async function POST(request: Request) {
     const file = formData.get("file");
 
     if (!(file instanceof File)) {
-      return NextResponse.json({ error: "Arquivo inválido." }, { status: 400 });
+      return NextResponse.json(
+        { error: "Arquivo inválido." },
+        { status: 400 }
+      );
     }
 
     const bytes = Buffer.from(await file.arrayBuffer()).toString("base64");
-    const transcript = await generateGeminiText([
+
+    const sourceText = await generateGeminiText([
       buildTranscriptionPrompt(),
       {
         inlineData: {
@@ -22,9 +26,13 @@ export async function POST(request: Request) {
       }
     ]);
 
-    return NextResponse.json({ transcript });
+    return NextResponse.json({ sourceText });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Falha ao transcrever arquivo.";
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Falha ao transcrever arquivo.";
+
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

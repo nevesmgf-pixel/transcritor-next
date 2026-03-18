@@ -42,29 +42,29 @@ export function ActionPanel({
           className={`button button--secondary ${
             loadingSocial ? "button--loading" : ""
           } ${socialGenerated ? "button--done" : ""}`}
-          disabled={!canGenerate || loadingSocial || socialGenerated}
+          disabled={!canGenerate || loadingSocial}
           onClick={onGenerateSocial}
           type="button"
         >
           {loadingSocial
-            ? "Gerando kit social..."
+            ? "Gerando conteúdo para redes..."
             : socialGenerated
-            ? "Kit social gerado ✓"
-            : "Gerar kit social"}
+            ? "Gerado ✓ Gerar novamente conteúdo para redes"
+            : "Gerar conteúdo para redes"}
         </button>
 
         <button
           className={`button button--secondary ${
             loadingBoostPlan ? "button--loading" : ""
           } ${boostPlanGenerated ? "button--done" : ""}`}
-          disabled={!canGenerate || loadingBoostPlan || boostPlanGenerated}
+          disabled={!canGenerate || loadingBoostPlan}
           onClick={onGenerateBoostPlan}
           type="button"
         >
           {loadingBoostPlan
             ? "Gerando Plano de Impulsionamento..."
             : boostPlanGenerated
-            ? "Plano de Impulsionamento gerado ✓"
+            ? "Gerado ✓ Gerar novamente Plano de Impulsionamento"
             : "Gerar Plano de Impulsionamento"}
         </button>
 
@@ -72,30 +72,30 @@ export function ActionPanel({
           className={`button button--secondary ${
             loadingVisual ? "button--loading" : ""
           } ${visualGenerated ? "button--done" : ""}`}
-          disabled={!canGenerate || loadingVisual || visualGenerated}
+          disabled={!canGenerate || loadingVisual}
           onClick={onGenerateVisual}
           type="button"
         >
           {loadingVisual
-            ? "Gerando Kit visual..."
+            ? "Gerando ideias visuais..."
             : visualGenerated
-            ? "Kit visual gerado ✓"
-            : "Gerar Kit visual"}
+            ? "Gerado ✓ Gerar novamente ideias visuais"
+            : "Gerar ideias visuais"}
         </button>
 
         <button
           className={`button button--secondary ${
             loadingYouTube ? "button--loading" : ""
           } ${youtubeGenerated ? "button--done" : ""}`}
-          disabled={!canGenerate || loadingYouTube || youtubeGenerated}
+          disabled={!canGenerate || loadingYouTube}
           onClick={onGenerateYouTube}
           type="button"
         >
           {loadingYouTube
-            ? "Gerando kit YouTube..."
+            ? "Gerando kit para YouTube..."
             : youtubeGenerated
-            ? "Kit YouTube gerado ✓"
-            : "Gerar kit YouTube"}
+            ? "Gerado ✓ Gerar novamente kit para YouTube"
+            : "Gerar kit para YouTube"}
         </button>
       </div>
     </section>
