@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { ActionPanel } from "@/components/ActionPanel";
 import { ContentKitViewer } from "@/components/ContentKitViewer";
 import { Header } from "@/components/Header";
-import { TranscriptViewer } from "@/components/TranscriptViewer";
+import { SourceTextViewer } from "@/components/SourceTextViewer";
 import { TranscribeButton } from "@/components/TranscribeButton";
 import { UploadArea } from "@/components/UploadArea";
 import { downloadTextFile } from "@/lib/downloadTextFile";
@@ -19,9 +19,14 @@ async function readJsonResponse<T>(response: Response): Promise<T> {
   return payload;
 }
 
-export function TranscritorApp() {
+export function ContentEngine() {
+  // Modo de entrada: "audio" (fluxo original) ou "text" (texto manual)
+  const [inputMode, setInputMode] = useState<"audio" | "text">("text");
+
+  // Texto-base central — alimenta todas as ações (social kit, visual kit, etc.)
+  const [sourceText, setSourceText] = useState("");
+
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [transcript, setTranscript] = useState("");
   const [boostPlan, setBoostPlan] = useState("");
   const [socialKit, setSocialKit] = useState("");
   const [visualKit, setVisualKit] = useState("");
@@ -33,7 +38,36 @@ export function TranscritorApp() {
   const [isGeneratingVisual, setIsGeneratingVisual] = useState(false);
   const [isGeneratingYoutube, setIsGeneratingYoutube] = useState(false);
 
-  const canGenerate = useMemo(() => transcript.trim().length > 0, [transcript]);
+  const canGenerate = useMemo(() => sourceText.trim().length > 0, [sourceText]);
+
+  // Limpa kits gerados ao trocar de modo (evita estado inconsistente)
+  function handleModeChange(mode: "audio" | "text") {
+    if (mode === inputMode) return;
+
+    const hasContent =
+    sourceText.trim().length > 0 ||
+    boostPlan.trim().length > 0 ||
+    socialKit.trim().length > 0 ||
+    visualKit.trim().length > 0 ||
+    youtubeKit.trim().length > 0;
+
+  if (hasContent) {
+    const shouldContinue = window.confirm(
+      "Trocar de modo vai limpar o texto atual e os kits gerados. Deseja continuar?"
+    );
+
+    if (!shouldContinue) return;
+  }
+
+  setInputMode(mode);
+  setSourceText("");
+  setSelectedFile(null);
+  setBoostPlan("");
+  setSocialKit("");
+  setVisualKit("");
+  setYoutubeKit("");
+  setError("");
+}
 
   function handleDownload(content: string, filename: string) {
     downloadTextFile(content, filename);
@@ -57,8 +91,8 @@ export function TranscritorApp() {
         body: formData
       });
 
-      const data = await readJsonResponse<{ transcript: string }>(response);
-      setTranscript(data.transcript);
+      const data = await readJsonResponse<{ sourceText: string }>(response);
+      setSourceText(data.sourceText);
       setBoostPlan("");
       setSocialKit("");
       setVisualKit("");
@@ -72,7 +106,7 @@ export function TranscritorApp() {
 
   async function handleGenerate(endpoint: string, setter: (value: string) => void, setLoading: (value: boolean) => void) {
     if (!canGenerate) {
-      setError("Transcreva um conteúdo antes de gerar kits.");
+      setError("Adicione ou gere um texto base antes de criar os kits.");
       return;
     }
 
@@ -80,12 +114,13 @@ export function TranscritorApp() {
     setLoading(true);
 
     try {
+      // Usa sourceText como fonte única para todas as ações
       const response = await fetch(endpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ transcript })
+        body: JSON.stringify({ sourceText })
       });
 
       const data = await readJsonResponse<{ content: string }>(response);
@@ -102,22 +137,48 @@ export function TranscritorApp() {
       <div className="page-shell__content">
         <Header />
         <div className="stack">
-          <section className="panel section-card">
-            <div className="panel__header">
-              <h2 className="panel__title">Upload</h2>
-            </div>
-            <div className="section-card__content">
-              <UploadArea fileName={selectedFile?.name ?? null} onChange={setSelectedFile} />
-              <div className="section-card__actions">
-                <TranscribeButton disabled={!selectedFile || isTranscribing} loading={isTranscribing} onClick={handleTranscribe} />
+          {/* Seletor de modo de entrada */}
+          <div className="mode-selector">
+            <button
+              className={`mode-selector__option ${inputMode === "text" ? "mode-selector__option--active" : ""}`}
+              onClick={() => handleModeChange("text")}
+              type="button"
+            >
+              Texto
+            </button>            
+            <button
+              className={`mode-selector__option ${inputMode === "audio" ? "mode-selector__option--active" : ""}`}
+              onClick={() => handleModeChange("audio")}
+              type="button"
+            >
+              Mídia
+            </button>
+
+          </div>
+
+          {/* Modo Áudio: upload + transcrição */}
+          {inputMode === "audio" && (
+            <section className="panel section-card">
+              <div className="panel__header">
+                <h2 className="panel__title">Envie sua mídia</h2>
               </div>
-            </div>
-          </section>
-          {error ? <div className="error-banner">{error}</div> : null}
-          <TranscriptViewer
-            transcript={transcript}
-            onDownloadTranscript={() => handleDownload(transcript, "transcricao.txt")}
+              <div className="section-card__content">
+                <UploadArea fileName={selectedFile?.name ?? null} onChange={setSelectedFile} />
+                <div className="section-card__actions">
+                  <TranscribeButton disabled={!selectedFile || isTranscribing} loading={isTranscribing} onClick={handleTranscribe} />
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* Texto base — readOnly no modo áudio, editável no modo texto */}
+          <SourceTextViewer
+            sourceText={sourceText}
+            onDownloadText={() => handleDownload(sourceText, "texto-base.txt")}
+            onSourceTextChange={inputMode === "text" ? setSourceText : undefined}
           />
+
+          {error ? <div className="error-banner">{error}</div> : null}
           <ActionPanel
             canGenerate={canGenerate}
             loadingBoostPlan={isGeneratingBoostPlan}

@@ -27,7 +27,7 @@ export function ContentKitViewer({
       <div className="kits__grid">
         <article className="kit-card">
           <div className="kit-card__header">
-            <h3 className="kit-card__title">Kit social</h3>
+            <h3 className="kit-card__title">Conteúdo para redes</h3>
             {socialKit ? (
               <button className="button button--secondary" onClick={onDownloadSocialKit} type="button">
                 Baixar .txt
@@ -51,7 +51,7 @@ export function ContentKitViewer({
 
         <article className="kit-card">
           <div className="kit-card__header">
-            <h3 className="kit-card__title">Kit visual</h3>
+            <h3 className="kit-card__title">Ideias visuais</h3>
             {visualKit ? (
               <button className="button button--secondary" onClick={onDownloadVisualKit} type="button">
                 Baixar .txt
@@ -63,7 +63,7 @@ export function ContentKitViewer({
 
         <article className="kit-card">
           <div className="kit-card__header">
-            <h3 className="kit-card__title">Kit YouTube</h3>
+            <h3 className="kit-card__title">Kit para YouTube</h3>
             {youtubeKit ? (
               <button className="button button--secondary" onClick={onDownloadYoutubeKit} type="button">
                 Baixar .txt
