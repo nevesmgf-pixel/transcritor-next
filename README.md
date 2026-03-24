@@ -1,8 +1,7 @@
-# Transformador de Conteúdo com IA
 
-Uma aplicação que transforma áudio, vídeo ou texto em múltiplos formatos de conteúdo prontos para publicação.
+# ⚙️ Content Engine
 
----
+Uma ferramenta que transforma áudio, vídeo e texto em múltiplos formatos de conteúdo.
 
 ## ✨ O que o app faz
 

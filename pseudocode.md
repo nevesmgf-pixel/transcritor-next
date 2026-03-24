@@ -18,7 +18,7 @@ se usuário enviar arquivo
 
 ## Transcrição
 
-se usuário clicar em transcrever
+se usuário clicar em gerar texto
 
     enviar arquivo para API backend
 

@@ -7,7 +7,14 @@ type InlineDataPart = {
   };
 };
 
-type GeminiPart = string | InlineDataPart;
+type FileDataPart = {
+  fileData: {
+    fileUri: string;
+    mimeType: string;
+  };
+};
+
+type GeminiPart = string | InlineDataPart | FileDataPart;
 
 function getClient() {
   const apiKey = process.env.GEMINI_API_KEY;
