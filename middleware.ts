@@ -7,9 +7,12 @@ const PUBLIC_API_PATHS = ["/api/login"];
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  const isFile = /\.[^/]+$/.test(pathname);
+
   if (
     pathname.startsWith("/_next/") ||
-    pathname === "/favicon.ico"
+    pathname === "/favicon.ico" ||
+    isFile
   ) {
     return NextResponse.next();
   }
@@ -21,7 +24,6 @@ export function middleware(request: NextRequest) {
   const isPublicApi = PUBLIC_API_PATHS.includes(pathname);
   const isApiRoute = pathname.startsWith("/api/");
 
-  // Regras para APIs
   if (isApiRoute) {
     if (!isAuthenticated && !isPublicApi) {
       return NextResponse.json({ error: "Não autorizado." }, { status: 401 });
@@ -30,7 +32,6 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Regras para páginas
   if (!isAuthenticated && !isPublicPage) {
     return NextResponse.redirect(new URL("/login", request.url));
   }

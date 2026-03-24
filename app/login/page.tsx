@@ -60,9 +60,20 @@ export default function LoginPage() {
           borderRadius: 12
         }}
       >
-        <h1 style={{ margin: 0, fontSize: 24 }}>Entrar</h1>
+        <img
+            src="/logo.png"
+            alt="NextLevel Content Engine"
+            style={{
+              width: 200,
+              margin: "0 auto 0 auto",
+              display: "block"
+            }}
+        />
+        <h2 style={{ textAlign: "center" }}>
+          Your AI Content Engine
+        </h2>
 
-        <label htmlFor="password">Senha</label>
+        <label htmlFor="password" style={{ textAlign: "center" }}><b>Senha</b></label>
         <input
           id="password"
           type="password"
